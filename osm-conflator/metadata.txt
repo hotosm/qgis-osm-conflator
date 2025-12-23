@@ -1,0 +1,25 @@
+[general]
+name=osm-conflator
+description=A tool with similar functionalities to JOSM for OpenStreetMap data conflation (merging).
+email=sam.woodcock@hotosm.org
+version=0.1.0
+author=Sam Woodcock
+
+category=form
+icon=logo.svg
+tags=osm,openstreetmap,conflate,merge
+tracker=https://github.com/hotosm/qgis-osm-conflator
+repository=https://github.com/hotosm/qgis-osm-conflator
+homepage=https://github.com/hotosm/qgis-osm-conflator
+
+about=
+    A simple conflation plugin for QGIS.
+
+changelog=
+    v0.1.0 - Initial release
+
+qgisMinimumVersion=3.40
+supportsQt6=True
+experimental=False
+deprecated=False
+plugin_dependencies=qpip

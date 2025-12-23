@@ -1,0 +1,34 @@
+[project]
+name = "qgis-osm-conflator"
+version = "0.1.0"
+description = "A tool with similar functionalities to JOSM for OpenStreetMap data conflation (merging)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "osm-login-python>=2.0.0",
+]
+
+[tool.qgis-plugin-ci]
+plugin_path = "osm-conflator"
+github_organization_slug = "hotosm"
+project_slug = "qgis-osm-conflator"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.1",
+    "qgis-plugin-ci>=2.8.10",
+]
+
+[tool.ruff]
+fix = true
+line-length = 88
+target-version = "py311"
+exclude = [
+    ".ruff_cache",
+    "osm-conflator/__version__.py",
+]
+[tool.ruff.lint]
+select = ["I", "E", "W", "D", "B", "F", "N", "Q"]
+ignore = ["N999", "N802"]
+[tool.ruff.lint.pydocstyle]
+convention = "google"
