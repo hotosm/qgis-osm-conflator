@@ -11,7 +11,7 @@ from pathlib import Path
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-# from osm-conflator.dialog import OSMConflatorDialog
+from osm-conflator.dialog import OSMConflatorDialog
 
 
 class OSMConflatorPlugin:
@@ -38,5 +38,5 @@ class OSMConflatorPlugin:
 
     def run(self):
         """Run the main processing dialog."""
-        # dlg = OSMConflatorDialog(self.iface.mainWindow())
-        # dlg.exec_()
+        dlg = OSMConflatorDialog(self.iface, self.iface.mainWindow())
+        dlg.exec_()
