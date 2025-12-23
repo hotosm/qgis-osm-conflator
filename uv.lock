@@ -696,6 +696,7 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "osm-login-python" },
+    { name = "requests" },
 ]
 
 [package.dev-dependencies]
@@ -705,7 +706,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "osm-login-python", specifier = ">=2.0.0" }]
+requires-dist = [
+    { name = "osm-login-python", specifier = ">=2.0.0" },
+    { name = "requests", specifier = ">=2.32.5" },
+]
 
 [package.metadata.requires-dev]
 dev = [

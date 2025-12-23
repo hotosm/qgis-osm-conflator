@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "osm-login-python>=2.0.0",
+    "requests>=2.32.5",
 ]
 
 [tool.qgis-plugin-ci]
