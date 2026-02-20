@@ -33,3 +33,23 @@ select = ["I", "E", "W", "D", "B", "F", "N", "Q"]
 ignore = ["N999", "N802"]
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.pytest.ini_options]
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "0.1.0"
+version_provider = "uv"
+version_files = [
+    "pyproject.toml:version",
+]
+changelog_file = "CHANGELOG.md"
+update_changelog_on_bump = true
+
+[tool.codespell]
+skip = "*CHANGELOG.md"
+write-changes = true

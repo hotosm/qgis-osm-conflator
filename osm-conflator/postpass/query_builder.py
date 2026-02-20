@@ -16,7 +16,6 @@ https://github.com/woodpeck/postpass
 
 from typing import Optional, Sequence, Tuple
 
-
 BBox = Tuple[float, float, float, float]
 
 
@@ -35,7 +34,6 @@ def create_column_filter(
     * Always returns a geometry column named ``geom`` (either centroid or
       the original geometry).
     """
-
     select_cols = ["osm_id", "tags"]
 
     for col in columns:
@@ -62,7 +60,6 @@ def create_bbox_filter(bbox: BBox, geom_col: str = "geom") -> str:
             4326
         )
     """
-
     min_lon, min_lat, max_lon, max_lat = bbox
     return (
         f"{geom_col} && "
@@ -85,7 +82,6 @@ def create_tag_filter(key: str, values: Sequence[str]) -> str:
     * single value of ``"*"``
       (wildcard) is treated as "presence only", like raw-data-api.
     """
-
     cleaned = [v for v in (values or []) if v is not None and v != ""]
     if len(cleaned) == 1 and cleaned[0] == "*":
         cleaned = []
@@ -127,7 +123,6 @@ def build_simple_query(
     The returned SQL intentionally **does not** end in a semicolon to match
     the usage patterns in both Postpass and raw-data-api.
     """
-
     if not table:
         raise ValueError("table is required for Postpass query.")
 
@@ -139,5 +134,3 @@ def build_simple_query(
 
     where_sql = " AND ".join(where_clauses)
     return f"SELECT {select_sql} FROM {table} WHERE {where_sql}"
-
-

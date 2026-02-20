@@ -21,11 +21,13 @@ This plugin uses [qgis-plugin-ci](https://github.com/opengisch/qgis-plugin-ci) f
 ### Automated Release (Recommended)
 
 Releases are handled automatically by GitHub Actions when you create a release on GitHub. The workflow will:
+
 - Build the plugin package
 - Upload it to the QGIS Plugin Repository
 - Create a GitHub release
 
 To release:
+
 1. Update the version in `pyproject.toml`
 2. Update the version in `osm-conflator/metadata.txt`
 3. Create a git tag: `git tag 0.1.0` (matching the version)

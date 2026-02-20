@@ -27,7 +27,6 @@ BBox = Tuple[float, float, float, float]
 
 def _bbox_where(bbox: BBox, geom_column: str = "geom") -> str:
     """Return SQL snippet restricting a geometry column to a WGS84 bbox."""
-
     min_lon, min_lat, max_lon, max_lat = bbox
     return (
         f"{geom_column} && "
@@ -39,9 +38,8 @@ def _bbox_where(bbox: BBox, geom_column: str = "geom") -> str:
     )
 
 
-def _tag_where(tag_key: Optional[str], tag_value: Optional[str]) -> Optional[str]:
+def _tag_where(tag_key: str | None, tag_value: str | None) -> str | None:
     """Return SQL snippet for a simple key[/=value] filter on the tags jsonb."""
-
     if not tag_key:
         return None
     if tag_value is None or tag_value == "":
@@ -54,9 +52,9 @@ def build_simple_bbox_query(
     *,
     table_name: str,
     bbox: BBox,
-    tag_key: Optional[str] = None,
-    tag_value: Optional[str] = None,
-    select_columns: Optional[Sequence[str]] = None,
+    tag_key: str | None = None,
+    tag_value: str | None = None,
+    select_columns: Sequence[str] | None = None,
 ) -> str:
     """Build a minimal SQL SELECT for Postpass over the flex schema.
 
@@ -74,7 +72,6 @@ def build_simple_bbox_query(
         Optional list of additional columns to fetch besides ``geom``.
         Defaults to ``['tags']`` for convenience.
     """
-
     if not table_name:
         raise ValueError("table_name is required for Postpass query.")
 
@@ -98,4 +95,3 @@ def build_simple_bbox_query(
     # commands. We follow that convention here.
     sql = f"SELECT {columns_sql} FROM {table_name} WHERE {where_sql}"
     return sql
-
