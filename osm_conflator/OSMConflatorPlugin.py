@@ -11,7 +11,7 @@ from pathlib import Path
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
 
-from osm-conflator.dialog import OSMConflatorDialog
+from .dialog import OSMConflatorDialog
 
 
 class OSMConflatorPlugin:

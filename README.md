@@ -16,11 +16,13 @@ A tool with similar functionalities to JOSM for OpenStreetMap data conflation (m
 
 ## Building and Releasing
 
-This plugin uses [qgis-plugin-ci](https://github.com/opengisch/qgis-plugin-ci) for automated building and releasing.
+This plugin uses [qgis-plugin-ci](https://github.com/opengisch/qgis-plugin-ci)
+for automated building and releasing.
 
 ### Automated Release (Recommended)
 
-Releases are handled automatically by GitHub Actions when you create a release on GitHub. The workflow will:
+Releases are handled automatically by GitHub Actions when you
+create a release on GitHub. The workflow will:
 
 - Build the plugin package
 - Upload it to the QGIS Plugin Repository
@@ -29,7 +31,7 @@ Releases are handled automatically by GitHub Actions when you create a release o
 To release:
 
 1. Update the version in `pyproject.toml`
-2. Update the version in `osm-conflator/metadata.txt`
+2. Update the version in `osm_conflator/metadata.txt`
 3. Create a git tag: `git tag 0.1.0` (matching the version)
 4. Push the tag: `git push origin 0.1.0`
 5. Create a GitHub release from the tag

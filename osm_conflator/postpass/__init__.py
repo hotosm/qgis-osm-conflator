@@ -20,7 +20,7 @@ raw-data-api prompts.
 
 from __future__ import annotations
 
-from typing import Optional, Sequence, Tuple
+from typing import Sequence, Tuple
 
 BBox = Tuple[float, float, float, float]
 

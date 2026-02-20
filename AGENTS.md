@@ -19,12 +19,12 @@ qgis-osm-conflator is a QGIS plugin that includes:
 
 Active app paths:
 
-- `osm-conflator/OSMConflatorPlugin.py`
-- `osm-conflator/actions.py`
-- `osm-conflator/dialog.py`
-- `osm-conflator/conflation/`
-- `osm-conflator/login/`
-- `osm-conflator/postpass/`
+- `osm_conflator/OSMConflatorPlugin.py`
+- `osm_conflator/actions.py`
+- `osm_conflator/dialog.py`
+- `osm_conflator/conflation/`
+- `osm_conflator/login/`
+- `osm_conflator/postpass/`
 
 ---
 

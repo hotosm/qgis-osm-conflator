@@ -10,7 +10,7 @@ dependencies = [
 ]
 
 [tool.qgis-plugin-ci]
-plugin_path = "osm-conflator"
+plugin_path = "osm_conflator"
 github_organization_slug = "hotosm"
 project_slug = "qgis-osm-conflator"
 
@@ -26,7 +26,7 @@ line-length = 88
 target-version = "py311"
 exclude = [
     ".ruff_cache",
-    "osm-conflator/__version__.py",
+    "osm_conflator/__version__.py",
 ]
 [tool.ruff.lint]
 select = ["I", "E", "W", "D", "B", "F", "N", "Q"]

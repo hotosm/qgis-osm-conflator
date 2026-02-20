@@ -3,8 +3,6 @@
 import json
 import tempfile
 from typing import Optional
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
 
 from qgis.core import Qgis, QgsMessageLog, QgsProject, QgsVectorLayer
 from qgis.PyQt.QtCore import Qt
@@ -19,7 +17,8 @@ from qgis.PyQt.QtWidgets import (
     QVBoxLayout,
 )
 
-from osm-conflator.postpass.query_builder import build_simple_query
+from .postpass.client import PostpassClient, PostpassClientError
+from .postpass.query_builder import build_simple_query
 
 
 class OSMConflatorDialog(QDialog):
@@ -107,12 +106,15 @@ class OSMConflatorDialog(QDialog):
         text = self.bboxEdit.text().strip()
         if not text:
             self._set_error(
-                "Please enter a bounding box in the form min_lon,min_lat,max_lon,max_lat."
+                "Please enter a bounding box in the form "
+                "min_lon,min_lat,max_lon,max_lat."
             )
             return None
         parts = [p.strip() for p in text.split(",")]
         if len(parts) != 4:
-            self._set_error("Bounding box must have exactly four comma-separated values.")
+            self._set_error(
+                "Bounding box must have exactly four comma-separated values."
+            )
             return None
         try:
             min_lon, min_lat, max_lon, max_lat = map(float, parts)
@@ -150,45 +152,29 @@ class OSMConflatorDialog(QDialog):
         tag_key = self.tagKeyEdit.text().strip() or None
         tag_value = self.tagValueEdit.text().strip() or None
 
-        try:
-            sql = build_simple_query(
-                table=table_name,
-                bbox=bbox,
-                columns=[],  # keep default osm_id, tags, geom
-                tag_key=tag_key,
-                tag_values=[tag_value] if tag_value else [],
-            )
-        except ValueError as exc:
-            self._set_error(str(exc))
-            return
-
         endpoint = self.endpointEdit.text().strip()
         if not endpoint:
             self._set_error("Please enter a Postpass endpoint URL.")
             return
-
-        # Build POST body like the curl examples in woodpeck/postpass
-        # https://github.com/woodpeck/postpass
-        body = urlencode({"data": sql}).encode("utf-8")
-        request = Request(endpoint, data=body, method="POST")
-
+        client = PostpassClient(endpoint=endpoint)
         try:
-            with urlopen(request) as resp:
-                content_type = resp.headers.get("Content-Type", "")
-                raw_bytes = resp.read()
-        except Exception as exc:  # noqa: BLE001
-            self._set_error(f"HTTP request failed: {exc}")
-            return
-
-        # Postpass returns GeoJSON by default; accept raw text and pass to GDAL/OGR
-        try:
-            # Validate that it is at least valid JSON; we still write the raw text to disk.
-            json.loads(raw_bytes.decode("utf-8"))
-        except Exception:  # noqa: BLE001
-            self._set_error(
-                "Response from Postpass was not valid JSON; "
-                f"content-type={content_type!r}."
-            )
+            # MVP default: buildings extraction when no explicit tag filter is provided.
+            if not tag_key:
+                geojson = client.extract_buildings(bbox)
+                tag_key = "building"
+                tag_value = "yes"
+                table_name = "postpass_pointpolygon"
+            else:
+                sql = build_simple_query(
+                    table=table_name,
+                    bbox=bbox,
+                    columns=[],  # keep default osm_id, tags, geom
+                    tag_key=tag_key,
+                    tag_values=[tag_value] if tag_value else [],
+                )
+                geojson = client.run_sql(sql)
+        except (ValueError, PostpassClientError) as exc:
+            self._set_error(str(exc))
             return
 
         try:
@@ -196,7 +182,7 @@ class OSMConflatorDialog(QDialog):
                 suffix=".geojson", prefix="osm_conflator_postpass_", delete=False
             )
             with tmp:
-                tmp.write(raw_bytes)
+                tmp.write(json.dumps(geojson).encode("utf-8"))
             geojson_path = tmp.name
         except Exception as exc:  # noqa: BLE001
             self._set_error(f"Failed to write temporary GeoJSON file: {exc}")

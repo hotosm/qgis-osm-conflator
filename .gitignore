@@ -1,4 +1,4 @@
 .venv
 .python-version
-osm-conflator/__pycache__
-osm-conflator*.zip
+**/__pycache__
+osm_conflator*.zip
